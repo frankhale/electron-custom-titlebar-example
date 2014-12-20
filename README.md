@@ -9,7 +9,7 @@ An example application for Atom-Shell that demonstrates a custom titlebar with i
 
 ##Author
 
-Frank Hale <frankhale@gmail.com>
+Frank Hale &lt;frankhale@gmail.com&gt;
 
 ##License
 

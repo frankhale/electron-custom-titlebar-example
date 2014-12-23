@@ -15,6 +15,8 @@ Frank Hale &lt;frankhale@gmail.com&gt;
 
 There are known issues with icon hovers not changing as expected. This is more to do with Atom-Shell than anything. This is noticable sometimes when entering one of the window icons and then quickly moving into the draggable window titlebar area. Sometimes the icons are not aware that they should transition their hover icon.
 
+Atom-Shell issue: https://github.com/atom/atom-shell/issues/741
+
 ##License
 
 GNU GPL v3

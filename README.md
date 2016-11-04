@@ -1,16 +1,16 @@
-atom-shell-custom-titlebar-example
+electron-custom-titlebar-example
 ==================================
 
-An example application for Atom-Shell that demonstrates a custom titlebar with icons
+An example application for Electron that demonstrates using a custom titlebar with icons.
 
-##Screenshot
+## Screenshot
 
 <img src="screenshots/custom-window-titlebar-and-buttons.PNG" alt="screenshot of custom window titlebar" />
 
-##Author
+## Author(s)
 
 Frank Hale &lt;frankhale@gmail.com&gt;
 
-##License
+## License
 
 GNU GPL v3

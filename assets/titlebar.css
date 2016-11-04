@@ -31,6 +31,17 @@ html, body {
   -webkit-app-region: no-drag;
   /*border: 1px solid green;*/
 }
+.restart-button-inactive {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 25px;
+  height: 20px;
+  text-align: center;    
+  user-select: none;
+  -webkit-app-region: no-drag;
+  color: #bcbcbc;  
+}
 .restart-button-invert {
   color: white;  
 }
@@ -70,6 +81,16 @@ html, body {
   user-select: none;
   -webkit-app-region: no-drag;
 }
+.maximize-button-inactive {
+  position: absolute;
+  background-image: url(titlebar-icons/maximize-inactive.png);
+  right: 51px;
+  width: 25px;
+  height: 20px;
+  top: 5px;
+  user-select: none;
+  -webkit-app-region: no-drag;
+}
 .maximize-button:hover {
   background-image: url(titlebar-icons/maximize-hover.png);
 }
@@ -83,12 +104,31 @@ html, body {
   user-select: none;
   -webkit-app-region: no-drag;
 }
+.maximized-button-inactive {
+  position: absolute;
+  background-image: url(titlebar-icons/maximized-inactive.png);
+  right: 51px;
+  width: 25px;
+  height: 20px;
+  top: 5px;
+  user-select: none;
+  -webkit-app-region: no-drag;
+}
 .maximized-button:hover {
   background-image: url(titlebar-icons/maximized-hover.png);
 }
 .minimize-button {
   position: absolute;
   background-image: url(titlebar-icons/minimize.png);
+  right: 76px;
+  width: 25px;
+  height: 20px;
+  top: 5px;
+  -webkit-app-region: no-drag;
+}
+.minimize-button-inactive {
+  position: absolute;
+  background-image: url(titlebar-icons/minimize-inactive.png);
   right: 76px;
   width: 25px;
   height: 20px;

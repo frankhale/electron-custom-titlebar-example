@@ -6,7 +6,9 @@ let MAIN = (function () {
     $closeButton = $(".close-button"),
     $maximizeButton = $("#maximize"),
     $minimizeButton = $(".minimize-button"),
-    $titlebar = $(".titlebar");
+    $titlebar = $(".draggable-area"),
+    $restartIcon = $("#refresh-icon");
+    //$titlebar = $(".titlebar");
 
   function init() {
     $restartButton.click(function () {
@@ -35,22 +37,48 @@ let MAIN = (function () {
 
     $restartButton.hover(
       function () {
-        $("#refresh-icon").addClass('restart-button-invert')
+        if(! $restartButton.hasClass("restart-button-inactive")) {
+          $restartIcon.addClass('restart-button-invert')
+        }
       },
       function () {
-        $("#refresh-icon").removeClass('restart-button-invert')
+        if(! $restartButton.hasClass("restart-button-inactive")) {
+          $restartIcon.removeClass('restart-button-invert')
+        }
       }
     );
 
-    window.onblur = function (e) {
+    $(window).blur(function (e) {
       $closeButton.removeClass("close-button");
       $closeButton.addClass("close-button-inactive");
-    };
 
-    window.onfocus = function (e) {
+      $maximizeButton.removeClass("maximize-button");
+      $maximizeButton.addClass("maximize-button-inactive");
+
+      $minimizeButton.removeClass("minimize-button");
+      $minimizeButton.addClass("minimize-button-inactive");
+
+      $restartButton.removeClass("restart-button");
+      $restartButton.addClass("restart-button-inactive");
+
+      $titlebar.css("color", "#bcbcbc");
+    });
+
+    $(window).focus(function (e) {
       $closeButton.removeClass("close-button-inactive");
       $closeButton.addClass("close-button");
-    };
+
+      $maximizeButton.removeClass("maximize-button-inactive");
+      $maximizeButton.addClass("maximize-button");
+
+      $minimizeButton.removeClass("minimize-button-inactive");
+      $minimizeButton.addClass("minimize-button");
+
+      $restartButton.removeClass("restart-button-inactive");
+      $restartButton.addClass("restart-button");
+      
+      $titlebar.css("color", "#000");
+    });
   }
 
   return {

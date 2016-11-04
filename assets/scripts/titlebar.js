@@ -1,14 +1,12 @@
 const remote = require('electron').remote,
       browser = remote.getCurrentWindow();
 
-let MAIN = (function () {
+let CUSTOM_TITLEBAR = (function () {
   let $restartButton = $(".restart-button"),
     $closeButton = $(".close-button"),
     $maximizeButton = $("#maximize"),
     $minimizeButton = $(".minimize-button"),
-    $titlebar = $(".draggable-area"),
-    $restartIcon = $("#refresh-icon");
-    //$titlebar = $(".titlebar");
+    $titlebar = $(".draggable-area");    
 
   function init() {
     $restartButton.click(function () {
@@ -34,19 +32,6 @@ let MAIN = (function () {
     $minimizeButton.click(function () {
       browser.minimize();
     });
-
-    $restartButton.hover(
-      function () {
-        if(! $restartButton.hasClass("restart-button-inactive")) {
-          $restartIcon.addClass('restart-button-invert')
-        }
-      },
-      function () {
-        if(! $restartButton.hasClass("restart-button-inactive")) {
-          $restartIcon.removeClass('restart-button-invert')
-        }
-      }
-    );
 
     $(window).blur(function (e) {
       $closeButton.removeClass("close-button");
@@ -89,5 +74,5 @@ let MAIN = (function () {
 })();
 
 $(document).ready(function () {
-  MAIN.init();
+  CUSTOM_TITLEBAR.init();
 });

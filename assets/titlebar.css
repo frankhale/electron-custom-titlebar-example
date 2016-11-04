@@ -1,53 +1,55 @@
-html, body {
+html,
+body {
   overflow: hidden;
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
 .draggable-area {
- position: absolute;
- user-select: none;
- -webkit-app-region: drag;
- left: 32px;
- right: 105px;
- height: 20px;
- top: 5px;
- margin-top: 3px;
- user-select: none;   
- overflow: hidden;
- /*border: 1px solid blue;*/
+  position: absolute;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  left: 32px;
+  right: 105px;
+  height: 20px;
+  top: 5px;
+  margin-top: 3px;
+  overflow: hidden;
 }
-.icon-offset {
-  margin-top: 2px;
-}
+
 .restart-button {
   position: absolute;
+  vertical-align: middle;
+  padding-top: 2px;  
   top: 5px;
   left: 5px;
   width: 25px;
   height: 20px;
-  text-align: center;    
-  user-select: none;
-  -webkit-app-region: no-drag;
-  /*border: 1px solid green;*/
+  text-align: center;
+  -webkit-user-select: none;
+  -webkit-app-region: no-drag;  
 }
+
 .restart-button-inactive {
   position: absolute;
+  vertical-align: middle;
+  padding-top: 2px;
   top: 5px;
   left: 5px;
   width: 25px;
   height: 20px;
-  text-align: center;    
-  user-select: none;
+  text-align: center;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
-  color: #bcbcbc;  
+  color: #bcbcbc;
 }
-.restart-button-invert {
-  color: white;  
-}
+
 .restart-button:hover {
   background-color: #3665b3;
+  color: white;
 }
+
 .close-button {
   position: absolute;
   background-image: url(titlebar-icons/close.png);
@@ -55,9 +57,10 @@ html, body {
   width: 45px;
   height: 20px;
   top: 5px;
-  user-select: none;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .close-button-inactive {
   position: absolute;
   background-image: url(titlebar-icons/close-inactive.png);
@@ -65,12 +68,14 @@ html, body {
   width: 45px;
   height: 20px;
   top: 5px;
-  user-select: none;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .close-button:hover {
   background-image: url(titlebar-icons/close-hover.png);
 }
+
 .maximize-button {
   position: absolute;
   background-image: url(titlebar-icons/maximize.png);
@@ -78,9 +83,10 @@ html, body {
   width: 25px;
   height: 20px;
   top: 5px;
-  user-select: none;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .maximize-button-inactive {
   position: absolute;
   background-image: url(titlebar-icons/maximize-inactive.png);
@@ -88,12 +94,14 @@ html, body {
   width: 25px;
   height: 20px;
   top: 5px;
-  user-select: none;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .maximize-button:hover {
   background-image: url(titlebar-icons/maximize-hover.png);
 }
+
 .maximized-button {
   position: absolute;
   background-image: url(titlebar-icons/maximized.png);
@@ -101,9 +109,10 @@ html, body {
   width: 25px;
   height: 20px;
   top: 5px;
-  user-select: none;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .maximized-button-inactive {
   position: absolute;
   background-image: url(titlebar-icons/maximized-inactive.png);
@@ -111,12 +120,14 @@ html, body {
   width: 25px;
   height: 20px;
   top: 5px;
-  user-select: none;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .maximized-button:hover {
   background-image: url(titlebar-icons/maximized-hover.png);
 }
+
 .minimize-button {
   position: absolute;
   background-image: url(titlebar-icons/minimize.png);
@@ -124,8 +135,10 @@ html, body {
   width: 25px;
   height: 20px;
   top: 5px;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .minimize-button-inactive {
   position: absolute;
   background-image: url(titlebar-icons/minimize-inactive.png);
@@ -133,11 +146,14 @@ html, body {
   width: 25px;
   height: 20px;
   top: 5px;
+  -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+
 .minimize-button:hover {
   background-image: url(titlebar-icons/minimize-hover.png);
 }
+
 #content {
   font-size: 22pt;
   text-align: center;
@@ -146,12 +162,12 @@ html, body {
   bottom: 5px;
   right: 7px;
   left: 7px;
-  /*border: 2px solid red;*/
 }
+
 .centered {
   position: fixed;
   width: 250px;
   top: 50%;
-  left: 50%;  
+  left: 50%;
   transform: translate(-50%, -50%);
 }

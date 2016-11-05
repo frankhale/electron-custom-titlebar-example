@@ -150,9 +150,13 @@ body {
   -webkit-app-region: no-drag;
 }
 
-.minimize-button:hover {
+.minimize-button-hover {  
   background-image: url(titlebar-icons/minimize-hover.png);
 }
+
+/*.minimize-button:hover {
+  background-image: url(titlebar-icons/minimize-hover.png);
+}*/
 
 #content {
   font-size: 22pt;
@@ -166,7 +170,7 @@ body {
 
 .centered {
   position: fixed;
-  width: 250px;
+  width: 350px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

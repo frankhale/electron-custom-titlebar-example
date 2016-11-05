@@ -1,23 +1,34 @@
-const remote = require('electron').remote,
+
+let CUSTOM_TITLEBAR = (() => {
+  const remote = require('electron').remote,
       browser = remote.getCurrentWindow();
 
-let CUSTOM_TITLEBAR = (function () {
   let $restartButton = $(".restart-button"),
-    $closeButton = $(".close-button"),
-    $maximizeButton = $("#maximize"),
-    $minimizeButton = $(".minimize-button"),
-    $titlebar = $(".draggable-area");    
+      $closeButton = $(".close-button"),
+      $maximizeButton = $("#maximize"),
+      $minimizeButton = $(".minimize-button"),
+      $titlebar = $(".draggable-area");    
 
   function init() {
-    $restartButton.click(function () {
-      browser.reload();
+    $restartButton.click(() => { browser.reload(); });
+    $closeButton.click(() => { browser.close(); });
+    $minimizeButton.click(() => {        
+      let minimizeInterval = setInterval(() => { 
+        clearInterval(minimizeInterval);
+        browser.minimize();
+      }, 25); 
+      $minimizeButton.removeClass("minimize-button-hover"); 
     });
 
-    $closeButton.click(function () {
-      browser.close();
+    // If we use a CSS hover here it will not clear when minimizing and even
+    // if you remove the class it still doesn't work. Need to control the hover
+    // state using event handlers.
+    $minimizeButton.on({
+      "mouseenter" : function() { $(this).addClass("minimize-button-hover"); },
+      "mouseleave" : function() { $(this).removeClass("minimize-button-hover"); }
     });
 
-    $maximizeButton.click(function () {
+    $maximizeButton.click(() => {
       if (!browser.isMaximized()) {
         browser.maximize();
         $maximizeButton.removeClass("maximize-button");
@@ -29,11 +40,23 @@ let CUSTOM_TITLEBAR = (function () {
       }
     });
 
-    $minimizeButton.click(function () {
-      browser.minimize();
+    $(window).on("focus", () => {
+      $closeButton.removeClass("close-button-inactive");
+      $closeButton.addClass("close-button");
+
+      $maximizeButton.removeClass("maximize-button-inactive");
+      $maximizeButton.addClass("maximize-button");
+      
+      $minimizeButton.removeClass("minimize-button-inactive");      
+      $minimizeButton.addClass("minimize-button");            
+
+      $restartButton.removeClass("restart-button-inactive");
+      $restartButton.addClass("restart-button");
+      
+      $titlebar.css("color", "#000");
     });
 
-    $(window).blur(function (e) {
+    $(window).on("blur", () => {
       $closeButton.removeClass("close-button");
       $closeButton.addClass("close-button-inactive");
 
@@ -48,29 +71,9 @@ let CUSTOM_TITLEBAR = (function () {
 
       $titlebar.css("color", "#bcbcbc");
     });
-
-    $(window).focus(function (e) {
-      $closeButton.removeClass("close-button-inactive");
-      $closeButton.addClass("close-button");
-
-      $maximizeButton.removeClass("maximize-button-inactive");
-      $maximizeButton.addClass("maximize-button");
-
-      $minimizeButton.removeClass("minimize-button-inactive");
-      $minimizeButton.addClass("minimize-button");
-
-      $restartButton.removeClass("restart-button-inactive");
-      $restartButton.addClass("restart-button");
-      
-      $titlebar.css("color", "#000");
-    });
   }
 
-  return {
-    init: function () {
-      init();
-    }
-  }
+  return { init: () => { init(); } }
 })();
 
 $(document).ready(function () {

@@ -5,6 +5,8 @@ An example application for Electron that demonstrates a custom titlebar
 
 ## Screenshot
 
+A montage of an active and inactive Electron window:
+
 <img src="screenshots/electron-custom-titlebar.png" alt="screenshot of custom window titlebar (active and inactive)" />
 
 ## How To Run

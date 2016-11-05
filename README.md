@@ -1,8 +1,7 @@
 electron-custom-titlebar-example
 ==================================
 
-An example application for Electron that demonstrates using a custom titlebar 
-with icons.
+An example application for Electron that demonstrates a custom titlebar
 
 ## Screenshot
 

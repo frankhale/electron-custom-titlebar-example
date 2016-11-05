@@ -1,0 +1,146 @@
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: default;
+}
+
+.title {
+  color: #000; 
+}
+
+.title-inactive {
+  color: #bcbcbc;
+}
+
+.titlebarItem (@top, @left: -1px, @right: -1px, @drag: false) {
+  position: absolute;
+  -webkit-user-select: none;  
+  top: @top;
+  & when not (@left = -1px) {
+    left: @left;
+  }
+  & when not (@right = -1px) {
+    right: @right;
+  }
+  & when (@drag = true) {
+    -webkit-app-region: drag;
+  } else {
+    -webkit-app-region: no-drag;  
+  }
+  height: 20px;    
+}
+
+.titlebar {
+  .titlebarItem(5px, 32px, 105px, @drag: true);
+  margin-top: 3px;
+  overflow: hidden;
+}
+
+.restart-button {
+  .titlebarItem(5px, 5px);
+  -webkit-app-region: no-drag;
+  text-align: center;
+  padding-top: 2px;
+  vertical-align: middle;
+  text-align: center;  
+  width: 25px;
+}
+
+.restart-button-inactive {
+  .titlebarItem(5px, 5px);  
+  color: #bcbcbc;  
+  padding-top: 2px;
+  vertical-align: middle;
+  text-align: center;
+  width: 25px;
+}
+
+.restart-button-hover {
+  background-color: #3665b3;
+  color: white;
+}
+
+.close-button {
+  .titlebarItem(5px, @right: 5px);
+  background-image: url(titlebar-icons/close.png);
+  width: 45px;
+}
+
+.close-button-inactive {
+  .titlebarItem(5px, @right: 5px);
+  background-image: url(titlebar-icons/close-inactive.png);    
+  width: 45px;
+}
+
+.close-button-hover {
+  background-image: url(titlebar-icons/close-hover.png);
+}
+
+.maximize-button {
+  .titlebarItem(5px, @right: 51px);
+  background-image: url(titlebar-icons/maximize.png);
+  width: 25px;  
+}
+
+.maximize-button-inactive {
+  .titlebarItem(5px, @right: 51px);
+  background-image: url(titlebar-icons/maximize-inactive.png);
+  width: 25px;
+}
+
+.maximize-button-hover {
+  background-image: url(titlebar-icons/maximize-hover.png);
+}
+
+.maximized-button {
+  .titlebarItem(5px, @right: 51px);
+  background-image: url(titlebar-icons/maximized.png);
+  width: 25px;
+}
+
+.maximized-button-inactive {
+  .titlebarItem(5px, @right: 51px);
+  background-image: url(titlebar-icons/maximized-inactive.png);
+  width: 25px;
+}
+
+.maximized-button-hover {
+  background-image: url(titlebar-icons/maximized-hover.png);
+}
+
+.minimize-button {
+  .titlebarItem(5px, @right: 76px);
+  background-image: url(titlebar-icons/minimize.png);  
+  width: 25px;
+}
+
+.minimize-button-inactive {
+  .titlebarItem(5px, @right: 76px);  
+  background-image: url(titlebar-icons/minimize-inactive.png);  
+  width: 25px;
+}
+
+.minimize-button-hover {  
+  background-image: url(titlebar-icons/minimize-hover.png);
+}
+
+#content {
+  font-size: 22pt;
+  text-align: center;
+  position: absolute;
+  top: 30px;
+  bottom: 5px;
+  right: 7px;
+  left: 7px;
+}
+
+.centered {
+  position: fixed;
+  width: 350px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

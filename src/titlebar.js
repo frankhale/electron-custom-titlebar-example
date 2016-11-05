@@ -34,7 +34,7 @@ class TitleBar extends React.Component {
     return remote.getCurrentWindow(); 
   }  
   componentDidMount() {
-    let focus = () => {
+    $(window).on("focus", () => {
       this.setState({
         restartClassName: "restart-button",
         minimizeClassName: "minimize-button",
@@ -42,10 +42,7 @@ class TitleBar extends React.Component {
         closeClassName:"close-button",
         titleClassName: "title" 
       });
-    };
-    
-    //$(window).on("mouseenter", () => { focus(); });
-    $(window).on("focus", () => { focus(); });
+    });
     
     $(window).on("blur", () => {
       this.setState({
@@ -129,7 +126,7 @@ class TitleBar extends React.Component {
     return (
       <div>
         <div id="restart" className={this.state.restartClassName + " " + this.state.restartEnterClassName + " fa fa-refresh icon-offset"} onClick={this.restartButtonHandler} onMouseEnter={this.restartEnterHandler} onMouseLeave={this.restartLeaveHandler}></div>
-        <div id="title" className={this.state.titleClassName + " draggable-area"}>{this.props.title}</div>
+        <div id="title" className={this.state.titleClassName + " titlebar"}>{this.props.title}</div>
         <div id="minimize" className={this.state.minimizeClassName + " " + this.state.minimizeEnterClassName} onClick={this.minimizeButtonHandler} onMouseEnter={this.minimizeEnterHandler} onMouseLeave={this.minimizeLeaveHandler}></div>
         <div id="maximize" className={this.state.maximizeClassName + " " + this.state.maximizeEnterClassName + " " + this.state.maximizedClassName} onClick={this.maximizeButtonHandler} onMouseEnter={this.maximizeEnterHandler} onMouseLeave={this.maximizeLeaveHandler}></div>
         <div id="close" className={this.state.closeClassName + " " + this.state.closeEnterClassName} onClick={this.closeButtonHandler} onMouseEnter={this.closeEnterHandler} onMouseLeave={this.closeLeaveHandler}></div>
@@ -142,7 +139,7 @@ class CustomTitleBarExample extends React.Component {
   render() {
     return (
       <div>
-        <TitleBar title="Hello, World!" />
+        <TitleBar title="Custom Electron TitleBar Example" />
         <div id="content">
           <span className="centered">Electron is Awesome!!!</span>
         </div>

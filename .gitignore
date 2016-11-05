@@ -1,5 +1,6 @@
 node_modules/*
 assets/scripts/*
+assets/*.css
 
 #################
 ## Eclipse

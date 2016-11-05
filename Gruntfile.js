@@ -16,6 +16,13 @@ module.exports = function(grunt) {
         }
       }
     },
+    less: {
+      production: {
+        files: {
+          "assets/titlebar.css": "src/titlebar.less"
+        }
+      }
+    },
     "uglify": {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -28,7 +35,8 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks("grunt-contrib-uglify");
 
-  grunt.registerTask("default", ["babel", "uglify"]);
+  grunt.registerTask("default", ["babel", "uglify", "less"]);
 };

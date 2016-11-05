@@ -5,19 +5,13 @@
     <link rel="stylesheet" type="text/css" href="./assets/titlebar.css">    
   </head>
   <body>    
-    <div class="restart-button fa fa-refresh icon-offset"></div>
-    <div class="draggable-area">Electron Custom Titlebar Example</div>
-    <div class="minimize-button"></div>
-    <div id="maximize" class="maximize-button"></div>
-    <div class="close-button"></div>
+    <div id="ui"></div>
 
-    <div id="content">
-      <span class="centered">Electron is Awesome!!!</span>
-    </div>
-    
     <script type="text/javascript">
       window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.min.js");
     </script>
+    <script src="./node_modules/react/dist/react.min.js" type="text/javascript"></script>
+    <script src="./node_modules/react-dom/dist/react-dom.min.js" type="text/javascript"></script>    
     <script src="./assets/scripts/titlebar.js" type="text/javascript"></script>
   </body>
 </html>

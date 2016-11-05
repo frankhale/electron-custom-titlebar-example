@@ -4,6 +4,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  cursor: default;
 }
 
 .draggable-area {
@@ -15,7 +16,7 @@ body {
   height: 20px;
   top: 5px;
   margin-top: 3px;
-  overflow: hidden;
+  overflow: hidden;   
 }
 
 .restart-button {
@@ -45,7 +46,7 @@ body {
   color: #bcbcbc;
 }
 
-.restart-button:hover {
+.restart-button-hover {
   background-color: #3665b3;
   color: white;
 }
@@ -72,7 +73,7 @@ body {
   -webkit-app-region: no-drag;
 }
 
-.close-button:hover {
+.close-button-hover {
   background-image: url(titlebar-icons/close-hover.png);
 }
 
@@ -98,7 +99,7 @@ body {
   -webkit-app-region: no-drag;
 }
 
-.maximize-button:hover {
+.maximize-button-hover {
   background-image: url(titlebar-icons/maximize-hover.png);
 }
 
@@ -124,7 +125,7 @@ body {
   -webkit-app-region: no-drag;
 }
 
-.maximized-button:hover {
+.maximized-button-hover {
   background-image: url(titlebar-icons/maximized-hover.png);
 }
 
@@ -154,9 +155,13 @@ body {
   background-image: url(titlebar-icons/minimize-hover.png);
 }
 
-/*.minimize-button:hover {
-  background-image: url(titlebar-icons/minimize-hover.png);
-}*/
+.title {
+  color: #000; 
+}
+
+.title-inactive {
+  color: #bcbcbc;
+}
 
 #content {
   font-size: 22pt;

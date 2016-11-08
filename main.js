@@ -16,6 +16,8 @@ app.on('ready', () => {
   win.loadURL(`file://${__dirname}/index.html`);
   win.once('ready-to-show', () => { win.show(); win.webContents.openDevTools(); });
   win.on('closed', () => { win = null; });
+  win.on("maximize", () => { win.webContents.send("maximize"); });
+  win.on("unmaximize", () => { win.webContents.send("unmaximize"); });
 });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') { app.quit(); } });
 app.on('activate', () => { if (win === null) { createWindow(); } });

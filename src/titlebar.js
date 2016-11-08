@@ -1,4 +1,5 @@
 const remote = require("electron").remote;
+const ipc = require("electron").ipcRenderer;
 
 class TitleBar extends React.Component {  
   constructor() {
@@ -52,6 +53,18 @@ class TitleBar extends React.Component {
         closeClassName:"close-button-inactive",
         titleClassName: "title-inactive"  
       });
+    });
+
+    ipc.on("maximize", (e) => {
+      this.setState({
+        maximizeClassName: "maximized-button"
+      });
+    });
+
+    ipc.on("unmaximize", (e) => {
+      this.setState({
+        maximizeClassName: "maximize-button",
+      });     
     });
   }
   restartEnterHandler(e) { 

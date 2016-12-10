@@ -14,7 +14,7 @@ app.on('ready', () => {
     resizable:true 
   });
   win.loadURL(`file://${__dirname}/index.html`);
-  win.once('ready-to-show', () => { win.show(); win.webContents.openDevTools(); });
+  win.once('ready-to-show', () => { win.show(); /*win.webContents.openDevTools();*/ });
   win.on('closed', () => { win = null; });
   win.on("maximize", () => { win.webContents.send("maximize"); });
   win.on("unmaximize", () => { win.webContents.send("unmaximize"); });

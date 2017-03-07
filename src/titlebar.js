@@ -64,6 +64,7 @@ class TitleBar extends React.Component {
     ipc.on("unmaximize", (e) => {
       this.setState({
         maximizeClassName: "maximize-button",
+        maximizedClassName: ""
       });     
     });
   }

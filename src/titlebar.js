@@ -1,24 +1,13 @@
 const remote = require("electron").remote;
 const ipc = require("electron").ipcRenderer;
 
-class TitleBar extends React.Component {  
+// this needs some love!!! Need to remove jQuery as a dependency.
+
+class TitleBar extends React.Component {
   constructor() {
     super();
 
-    this.restartEnterHandler = this.restartEnterHandler.bind(this);
-    this.restartLeaveHandler = this.restartLeaveHandler.bind(this);
-    this.minimizeButtonHandler = this.minimizeButtonHandler.bind(this);
-    this.minimizeEnterHandler = this.minimizeEnterHandler.bind(this);
-    this.minimizeLeaveHandler = this.minimizeLeaveHandler.bind(this);
-    this.maximizeButtonHandler = this.maximizeButtonHandler.bind(this);
-    this.maximizeEnterHandler = this.maximizeEnterHandler.bind(this);
-    this.maximizeLeaveHandler = this.maximizeLeaveHandler.bind(this);
-    this.closeEnterHandler = this.closeEnterHandler.bind(this);
-    this.closeLeaveHandler = this.closeLeaveHandler.bind(this);
-    this.closeButtonHandler = this.closeButtonHandler.bind(this);
-    this.restartButtonHandler = this.restartButtonHandler.bind(this);
-
-    this.state = {      
+    this.state = {
       restartClassName: "restart-button",
       minimizeClassName: "minimize-button",
       maximizeClassName: "maximize-button",
@@ -29,121 +18,200 @@ class TitleBar extends React.Component {
       minimizeEnterClassName: "",
       maximizeEnterClassName: "",
       closeEnterClassName: ""
-    };   
+    };
   }
+
   getBrowserWindow() {
-    return remote.getCurrentWindow(); 
-  }  
+    return remote.getCurrentWindow();
+  }
+
   componentDidMount() {
     $(window).on("focus", () => {
       this.setState({
         restartClassName: "restart-button",
         minimizeClassName: "minimize-button",
-        maximizeClassName: (this.getBrowserWindow().isMaximized()) ? "maximized-button" : "maximize-button",
-        closeClassName:"close-button",
-        titleClassName: "title" 
+        maximizeClassName: this.getBrowserWindow().isMaximized()
+          ? "maximized-button"
+          : "maximize-button",
+        closeClassName: "close-button",
+        titleClassName: "title"
       });
     });
-    
+
     $(window).on("blur", () => {
       this.setState({
         restartClassName: "restart-button-inactive",
         minimizeClassName: "minimize-button-inactive",
-        maximizeClassName: (this.getBrowserWindow().isMaximized()) ? "maximized-button-inactive" : "maximize-button-inactive",
-        closeClassName:"close-button-inactive",
-        titleClassName: "title-inactive"  
+        maximizeClassName: this.getBrowserWindow().isMaximized()
+          ? "maximized-button-inactive"
+          : "maximize-button-inactive",
+        closeClassName: "close-button-inactive",
+        titleClassName: "title-inactive"
       });
     });
 
-    ipc.on("maximize", (e) => {
+    ipc.on("maximize", e => {
       this.setState({
         maximizeClassName: "maximized-button"
       });
     });
 
-    ipc.on("unmaximize", (e) => {
+    ipc.on("unmaximize", e => {
       this.setState({
         maximizeClassName: "maximize-button",
         maximizedClassName: ""
-      });     
+      });
     });
   }
-  restartEnterHandler(e) { 
-    if(! $("#restart").hasClass("restart-button-inactive")) {
+
+  restartEnterHandler = e => {
+    if (!$("#restart").hasClass("restart-button-inactive")) {
       this.setState({ restartEnterClassName: "restart-button-hover" });
     }
-  }
-  restartLeaveHandler(e) { 
+  };
+
+  restartLeaveHandler = e => {
     this.setState({ restartEnterClassName: "" });
-  }
-  minimizeEnterHandler(e) {
-    if(! $("#minimize").hasClass("minimize-button-inactive")) {
+  };
+
+  minimizeEnterHandler = e => {
+    if (!$("#minimize").hasClass("minimize-button-inactive")) {
       this.setState({ minimizeEnterClassName: "minimize-button-hover" });
     }
-  }
-  minimizeLeaveHandler(e) {
+  };
+
+  minimizeLeaveHandler = e => {
     this.setState({ minimizeEnterClassName: "" });
-  }
-  maximizeEnterHandler(e) {
-    if(! $("#maximize").hasClass("maximize-button-inactive")) {
-      this.setState({ maximizeEnterClassName: (this.getBrowserWindow().isMaximized()) ? "maximized-button-hover" : "maximize-button-hover" });
+  };
+
+  maximizeEnterHandler = e => {
+    if (!$("#maximize").hasClass("maximize-button-inactive")) {
+      this.setState({
+        maximizeEnterClassName: this.getBrowserWindow().isMaximized()
+          ? "maximized-button-hover"
+          : "maximize-button-hover"
+      });
     }
-  }
-  maximizeLeaveHandler(e) {
+  };
+
+  maximizeLeaveHandler = e => {
     this.setState({ maximizeEnterClassName: "" });
-  }
-  closeEnterHandler(e) { 
-    if(! $("#close").hasClass("close-button-inactive")) {
+  };
+
+  closeEnterHandler = e => {
+    if (!$("#close").hasClass("close-button-inactive")) {
       this.setState({ closeEnterClassName: "close-button-hover" });
     }
-  }
-  closeLeaveHandler(e) { 
+  };
+
+  closeLeaveHandler = e => {
     this.setState({ closeEnterClassName: "" });
-  }
-  restartButtonHandler(e) {
+  };
+
+  restartButtonHandler = e => {
     $(window).focus();
     this.getBrowserWindow().reload();
-  }
-  minimizeButtonHandler(e) {
+  };
+
+  minimizeButtonHandler = e => {
     $(window).focus();
-    this.setState({
-      minimizeEnterClassName: "" 
-    }, () => {
-      // need to wait a tiny bit for the hover state to clear otherwise the
-      // preview of the app on the Windows taskbar will still have the minimize
-      // button's hover state incorrect.
-      let minimizeInterval = setInterval(() => { 
+    this.setState(
+      {
+        minimizeEnterClassName: ""
+      },
+      () => {
+        // need to wait a tiny bit for the hover state to clear otherwise the
+        // preview of the app on the Windows taskbar will still have the minimize
+        // button's hover state incorrect.
+        let minimizeInterval = setInterval(() => {
           clearInterval(minimizeInterval);
           this.getBrowserWindow().minimize();
-      }, 25);
-    });
-  } 
-  maximizeButtonHandler(e) {
+        }, 25);
+      }
+    );
+  };
+
+  maximizeButtonHandler = e => {
     $(window).focus();
     if (!this.getBrowserWindow().isMaximized()) {
-      this.setState({
-        maximizeClassName: "",
-        maximizedClassName: "maximized-button"
-      }, () => { this.getBrowserWindow().maximize(); });      
+      this.setState(
+        {
+          maximizeClassName: "",
+          maximizedClassName: "maximized-button"
+        },
+        () => {
+          this.getBrowserWindow().maximize();
+        }
+      );
     } else {
-      this.setState({
-        maximizeClassName: "maximize-button",
-        maximizedClassName: ""
-      }, () => { this.getBrowserWindow().unmaximize(); });
+      this.setState(
+        {
+          maximizeClassName: "maximize-button",
+          maximizedClassName: ""
+        },
+        () => {
+          this.getBrowserWindow().unmaximize();
+        }
+      );
     }
-  } 
-  closeButtonHandler(e) {
+  };
+
+  closeButtonHandler = e => {
     $(window).focus();
-    this.getBrowserWindow().close();    
-  }  
+    this.getBrowserWindow().close();
+  };
+
   render() {
     return (
       <div>
-        <div id="restart" className={this.state.restartClassName + " " + this.state.restartEnterClassName + " fa fa-refresh icon-offset"} onClick={this.restartButtonHandler} onMouseEnter={this.restartEnterHandler} onMouseLeave={this.restartLeaveHandler}></div>
-        <div id="title" className={this.state.titleClassName + " titlebar"}>{this.props.title}</div>
-        <div id="minimize" className={this.state.minimizeClassName + " " + this.state.minimizeEnterClassName} onClick={this.minimizeButtonHandler} onMouseEnter={this.minimizeEnterHandler} onMouseLeave={this.minimizeLeaveHandler}></div>
-        <div id="maximize" className={this.state.maximizeClassName + " " + this.state.maximizeEnterClassName + " " + this.state.maximizedClassName} onClick={this.maximizeButtonHandler} onMouseEnter={this.maximizeEnterHandler} onMouseLeave={this.maximizeLeaveHandler}></div>
-        <div id="close" className={this.state.closeClassName + " " + this.state.closeEnterClassName} onClick={this.closeButtonHandler} onMouseEnter={this.closeEnterHandler} onMouseLeave={this.closeLeaveHandler}></div>
+        <div
+          id="restart"
+          className={
+            this.state.restartClassName +
+            " " +
+            this.state.restartEnterClassName +
+            " fa fa-refresh icon-offset"
+          }
+          onClick={this.restartButtonHandler}
+          onMouseEnter={this.restartEnterHandler}
+          onMouseLeave={this.restartLeaveHandler}
+        />
+        <div id="title" className={this.state.titleClassName + " titlebar"}>
+          {this.props.title}
+        </div>
+        <div
+          id="minimize"
+          className={
+            this.state.minimizeClassName +
+            " " +
+            this.state.minimizeEnterClassName
+          }
+          onClick={this.minimizeButtonHandler}
+          onMouseEnter={this.minimizeEnterHandler}
+          onMouseLeave={this.minimizeLeaveHandler}
+        />
+        <div
+          id="maximize"
+          className={
+            this.state.maximizeClassName +
+            " " +
+            this.state.maximizeEnterClassName +
+            " " +
+            this.state.maximizedClassName
+          }
+          onClick={this.maximizeButtonHandler}
+          onMouseEnter={this.maximizeEnterHandler}
+          onMouseLeave={this.maximizeLeaveHandler}
+        />
+        <div
+          id="close"
+          className={
+            this.state.closeClassName + " " + this.state.closeEnterClassName
+          }
+          onClick={this.closeButtonHandler}
+          onMouseEnter={this.closeEnterHandler}
+          onMouseLeave={this.closeLeaveHandler}
+        />
       </div>
     );
   }
@@ -162,6 +230,6 @@ class CustomTitleBarExample extends React.Component {
   }
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
   ReactDOM.render(<CustomTitleBarExample />, document.getElementById("ui"));
 });

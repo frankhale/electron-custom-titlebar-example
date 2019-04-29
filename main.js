@@ -1,13 +1,39 @@
 const { app, BrowserWindow } = require("electron");
+const io = require("socket.io").listen(3001);
 
 let win;
 
+io.on("connection", socket => {
+  console.log("socket.io server is connected");
+
+  socket.on("isMaximized", () => {
+    socket.emit("isMaximized", win.isMaximized());
+  });
+
+  socket.on("unmaximize", () => {
+    socket.emit("unmaximize");
+    win.unmaximize();
+  });
+  socket.on("minimize", () => {
+    win.minimize();
+  });
+  socket.on("maximize", () => {
+    win.maximize();
+  });
+  socket.on("reload", () => {
+    win.reload();
+  });
+  socket.on("close", () => {
+    win.close();
+  });
+});
+
 app.on("ready", () => {
   win = new BrowserWindow({
-    width: 400,
-    minWidth: 400,
-    height: 300,
-    minHeight: 300,
+    width: 800,
+    minWidth: 800,
+    height: 600,
+    minHeight: 600,
     backgroundColor: "#fff",
     show: false,
     frame: false,
@@ -16,16 +42,10 @@ app.on("ready", () => {
   win.loadURL(`file://${__dirname}/index.html`);
   win.once("ready-to-show", () => {
     win.show();
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
   });
   win.on("closed", () => {
     win = null;
-  });
-  win.on("maximize", () => {
-    win.webContents.send("maximize");
-  });
-  win.on("unmaximize", () => {
-    win.webContents.send("unmaximize");
   });
 });
 app.on("window-all-closed", () => {

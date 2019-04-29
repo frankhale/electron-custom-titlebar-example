@@ -1,7 +1,4 @@
-const remote = require("electron").remote;
-const ipc = require("electron").ipcRenderer;
-
-// this needs some love!!! Need to remove jQuery as a dependency.
+const socket = io("http://localhost:3001");
 
 class TitleBar extends React.Component {
   constructor() {
@@ -17,55 +14,85 @@ class TitleBar extends React.Component {
       restartEnterClassName: "",
       minimizeEnterClassName: "",
       maximizeEnterClassName: "",
-      closeEnterClassName: ""
+      closeEnterClassName: "",
+      isMaximized: false
     };
   }
 
-  getBrowserWindow() {
-    return remote.getCurrentWindow();
-  }
-
   componentDidMount() {
-    $(window).on("focus", () => {
+    window.onfocus = () => {
       this.setState({
         restartClassName: "restart-button",
         minimizeClassName: "minimize-button",
-        maximizeClassName: this.getBrowserWindow().isMaximized()
+        maximizeClassName: this.state.isMaximized
           ? "maximized-button"
           : "maximize-button",
         closeClassName: "close-button",
         titleClassName: "title"
       });
-    });
+    };
 
-    $(window).on("blur", () => {
+    window.onblur = () => {
       this.setState({
         restartClassName: "restart-button-inactive",
         minimizeClassName: "minimize-button-inactive",
-        maximizeClassName: this.getBrowserWindow().isMaximized()
+        maximizeClassName: this.state.isMaximized
           ? "maximized-button-inactive"
           : "maximize-button-inactive",
         closeClassName: "close-button-inactive",
         titleClassName: "title-inactive"
       });
-    });
+    };
 
-    ipc.on("maximize", e => {
+    socket.on("maximize", () => {
       this.setState({
+        isMaximized: true,
         maximizeClassName: "maximized-button"
       });
     });
 
-    ipc.on("unmaximize", e => {
+    socket.on("unmaximize", () => {
       this.setState({
+        isMaximized: false,
         maximizeClassName: "maximize-button",
         maximizedClassName: ""
       });
     });
+
+    socket.on("isMaximized", result => {
+      this.setState(
+        {
+          isMaximized: result
+        },
+        () => {
+          window.focus();
+
+          if (!this.state.isMaximized) {
+            socket.emit("maximize");
+
+            this.setState({
+              maximizeClassName: "",
+              maximizedClassName: "maximized-button"
+            });
+          } else {
+            socket.emit("unmaximize");
+
+            this.setState({
+              maximizeClassName: "maximize-button",
+              maximizedClassName: ""
+            });
+          }
+        }
+      );
+    });
   }
 
   restartEnterHandler = e => {
-    if (!$("#restart").hasClass("restart-button-inactive")) {
+    if (
+      !document
+        .querySelector("#restart")
+        .classList.contains("restart-button-inactive")
+    ) {
       this.setState({ restartEnterClassName: "restart-button-hover" });
     }
   };
@@ -75,7 +102,11 @@ class TitleBar extends React.Component {
   };
 
   minimizeEnterHandler = e => {
-    if (!$("#minimize").hasClass("minimize-button-inactive")) {
+    if (
+      !document
+        .querySelector("#minimize")
+        .classList.contains("minimize-button-inactive")
+    ) {
       this.setState({ minimizeEnterClassName: "minimize-button-hover" });
     }
   };
@@ -85,9 +116,13 @@ class TitleBar extends React.Component {
   };
 
   maximizeEnterHandler = e => {
-    if (!$("#maximize").hasClass("maximize-button-inactive")) {
+    if (
+      !document
+        .querySelector("#maximize")
+        .classList.contains("maximize-button-inactive")
+    ) {
       this.setState({
-        maximizeEnterClassName: this.getBrowserWindow().isMaximized()
+        maximizeEnterClassName: this.state.isMaximized
           ? "maximized-button-hover"
           : "maximize-button-hover"
       });
@@ -99,7 +134,11 @@ class TitleBar extends React.Component {
   };
 
   closeEnterHandler = e => {
-    if (!$("#close").hasClass("close-button-inactive")) {
+    if (
+      !document
+        .querySelector("#close")
+        .classList.contains("close-button-inactive")
+    ) {
       this.setState({ closeEnterClassName: "close-button-hover" });
     }
   };
@@ -109,12 +148,12 @@ class TitleBar extends React.Component {
   };
 
   restartButtonHandler = e => {
-    $(window).focus();
-    this.getBrowserWindow().reload();
+    window.focus();
+    socket.emit("reload");
   };
 
   minimizeButtonHandler = e => {
-    $(window).focus();
+    window.focus();
     this.setState(
       {
         minimizeEnterClassName: ""
@@ -125,40 +164,19 @@ class TitleBar extends React.Component {
         // button's hover state incorrect.
         let minimizeInterval = setInterval(() => {
           clearInterval(minimizeInterval);
-          this.getBrowserWindow().minimize();
+          socket.emit("minimize");
         }, 25);
       }
     );
   };
 
   maximizeButtonHandler = e => {
-    $(window).focus();
-    if (!this.getBrowserWindow().isMaximized()) {
-      this.setState(
-        {
-          maximizeClassName: "",
-          maximizedClassName: "maximized-button"
-        },
-        () => {
-          this.getBrowserWindow().maximize();
-        }
-      );
-    } else {
-      this.setState(
-        {
-          maximizeClassName: "maximize-button",
-          maximizedClassName: ""
-        },
-        () => {
-          this.getBrowserWindow().unmaximize();
-        }
-      );
-    }
+    socket.emit("isMaximized");
   };
 
   closeButtonHandler = e => {
-    $(window).focus();
-    this.getBrowserWindow().close();
+    window.focus();
+    socket.emit("close");
   };
 
   render() {
@@ -166,48 +184,39 @@ class TitleBar extends React.Component {
       <div>
         <div
           id="restart"
-          className={
-            this.state.restartClassName +
-            " " +
-            this.state.restartEnterClassName +
-            " fa fa-refresh icon-offset"
-          }
+          className={`${this.state.restartClassName} ${
+            this.state.restartEnterClassName
+          } fas fa-recycle`}
           onClick={this.restartButtonHandler}
           onMouseEnter={this.restartEnterHandler}
           onMouseLeave={this.restartLeaveHandler}
         />
-        <div id="title" className={this.state.titleClassName + " titlebar"}>
+        <div id="title" className={`${this.state.titleClassName} titlebar`}>
           {this.props.title}
         </div>
         <div
           id="minimize"
-          className={
-            this.state.minimizeClassName +
-            " " +
+          className={`${this.state.minimizeClassName} ${
             this.state.minimizeEnterClassName
-          }
+          }`}
           onClick={this.minimizeButtonHandler}
           onMouseEnter={this.minimizeEnterHandler}
           onMouseLeave={this.minimizeLeaveHandler}
         />
         <div
           id="maximize"
-          className={
-            this.state.maximizeClassName +
-            " " +
-            this.state.maximizeEnterClassName +
-            " " +
-            this.state.maximizedClassName
-          }
+          className={`${this.state.maximizeClassName} ${
+            this.state.maximizeEnterClassName
+          } ${this.state.maximizedClassName}`}
           onClick={this.maximizeButtonHandler}
           onMouseEnter={this.maximizeEnterHandler}
           onMouseLeave={this.maximizeLeaveHandler}
         />
         <div
           id="close"
-          className={
-            this.state.closeClassName + " " + this.state.closeEnterClassName
-          }
+          className={`${this.state.closeClassName} ${
+            this.state.closeEnterClassName
+          }`}
           onClick={this.closeButtonHandler}
           onMouseEnter={this.closeEnterHandler}
           onMouseLeave={this.closeLeaveHandler}
@@ -230,6 +239,6 @@ class CustomTitleBarExample extends React.Component {
   }
 }
 
-$(document).ready(function() {
+window.onload = () => {
   ReactDOM.render(<CustomTitleBarExample />, document.getElementById("ui"));
-});
+};

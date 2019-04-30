@@ -3,6 +3,8 @@ const io = require("socket.io").listen(3001);
 
 let win;
 
+process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
+
 io.on("connection", socket => {
   console.log("socket.io server is connected");
 
@@ -39,7 +41,8 @@ app.on("ready", () => {
     frame: false,
     resizable: true
   });
-  win.loadURL(`file://${__dirname}/index.html`);
+  //win.loadURL(`file://${__dirname}/index.html`);
+  win.loadURL("http://localhost:3000");
   win.once("ready-to-show", () => {
     win.show();
     win.webContents.openDevTools();

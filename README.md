@@ -1,5 +1,4 @@
-electron-custom-titlebar-example
-==================================
+# electron-custom-titlebar-example
 
 An example application for Electron that demonstrates a custom titlebar
 
@@ -11,16 +10,18 @@ A montage of an active and inactive Electron window:
 
 ## How To Run
 
-This requires Node to be installed on your machine: 
+This requires Node to be installed on your machine:
 [https://nodejs.org](https://nodejs.org)
 
-- Clone this repository
+- Clone this repository using Git
 - Open command prompt
 - Change to the directory you cloned the repository to
-- Run `npm install grunt -g`
-- Run `npm install`
-- Run `grunt`
-- Run `npm start`
+- `npm install`
+- `cd frontend`
+- `npm install`
+- `npm run build`
+- `cd ..`
+- `npm run start`
 
 ## Author(s)
 
@@ -32,4 +33,4 @@ GNU GPL v3
 
 ## Date
 
-5 November 2016
+30 April 2019
